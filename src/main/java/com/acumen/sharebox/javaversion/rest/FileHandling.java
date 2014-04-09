@@ -31,7 +31,18 @@ public class FileHandling {
         return Response.status(200).entity(output).build();
     }
     
-   
+    @DELETE
+    @Path("/delete/{objectkey}")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response deleteObject(
+    		@PathParam("objectkey") String key){
+    	AwsS3BucketHandling awsS3BucketHandling=new AwsS3BucketHandling();
+    	System.out.println("key::::::: "+key);
+    	String output=awsS3BucketHandling.deleteS3BucketObjects(key);
+    	return Response.status(200).entity(output).build();
+    }  
+
+    
     
     @POST
     @Path("/uploadDirectory")
