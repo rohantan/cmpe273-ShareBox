@@ -89,12 +89,12 @@ public class AwsS3BucketHandling {
 		return response;
 	}
 		public String deleteS3BucketObjects(String key){
-			String response="fail";
+			
 			AmazonS3 s3 = new AmazonS3Client(new ClasspathPropertiesFileCredentialsProvider());
-			Region usWest2 = Region.getRegion(Regions.US_WEST_2);
-			s3.setRegion(usWest2);
+			Region usWest1 = Region.getRegion(Regions.US_WEST_2);
+			s3.setRegion(usWest1);
 			String bucketName = "shareboxbucket";
-
+			String response="fail";
 			System.out.println("===========================================");
 			System.out.println("Getting Started with Amazon S3");
 			System.out.println("===========================================\n");
@@ -110,7 +110,8 @@ public class AwsS3BucketHandling {
 				System.out.println("AWS Error Code:   " + ase.getErrorCode());
 				System.out.println("Error Type:       " + ase.getErrorType());
 				System.out.println("Request ID:       " + ase.getRequestId());
-			} catch (AmazonClientException ace) {
+			} catch (AmazonClientException ace)
+			{
 				System.out.println("Caught an AmazonClientException, which means the client encountered "
 						+ "a serious internal problem while trying to communicate with S3, "
 						+ "such as not being able to access the network.");
