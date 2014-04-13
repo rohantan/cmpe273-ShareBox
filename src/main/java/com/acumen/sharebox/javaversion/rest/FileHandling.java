@@ -55,5 +55,19 @@ public class FileHandling {
     	System.out.println("filename: $$$$ "+fileobject.getName());
     	String output=awsS3BucketHandling.addFolderS3BucketObjects(fileobject,fileobject.getName());
         return Response.status(200).entity(output).build();
-    }    
+        
+    }   
+    @PUT
+    @Path("/restore")
+    @Consumes(MediaType.MULTIPART_FORM_DATA)
+    public Response restoreObject(
+            @PathParam("objectkey") String key,
+            @PathParam("expirationInDays") int expirationInDays) {
+ 
+    	System.out.println("inside class uploadFile###################");
+    	AwsS3BucketHandling awsS3BucketHandling=new AwsS3BucketHandling();
+    	String output=awsS3BucketHandling.restoreS3BucketObjects(key,expirationInDays);
+        return Response.status(200).entity(output).build();
+    }
+
 }

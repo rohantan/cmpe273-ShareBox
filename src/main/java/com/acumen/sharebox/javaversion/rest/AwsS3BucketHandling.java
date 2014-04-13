@@ -120,6 +120,39 @@ public class AwsS3BucketHandling {
 			return response;
 		}
 	
+		public String restoreS3BucketObjects(String key,int expirationInDays){
+			String response="fail";
+			AmazonS3 s3 = new AmazonS3Client(new ClasspathPropertiesFileCredentialsProvider());
+			Region usWest2 = Region.getRegion(Regions.US_WEST_2);
+			s3.setRegion(usWest2);
+			String bucketName = "shareboxbucket";
+
+			System.out.println("===========================================");
+			System.out.println("Getting Started with Amazon S3");
+			System.out.println("===========================================\n");
+			
+			try {
+				RestoreObjectRequest request = new RestoreObjectRequest(bucketName, key, 2);
+				s3.restoreObject(request);
+				
+				response="success";
+			} catch (AmazonServiceException ase) {
+				System.out.println("Caught an AmazonServiceException, which means your request made it "
+						+ "to Amazon S3, but was rejected with an error response for some reason.");
+				System.out.println("Error Message:    " + ase.getMessage());
+				System.out.println("HTTP Status Code: " + ase.getStatusCode());
+				System.out.println("AWS Error Code:   " + ase.getErrorCode());
+				System.out.println("Error Type:       " + ase.getErrorType());
+				System.out.println("Request ID:       " + ase.getRequestId());
+			} catch (AmazonClientException ace) {
+				System.out.println("Caught an AmazonClientException, which means the client encountered "
+						+ "a serious internal problem while trying to communicate with S3, "
+						+ "such as not being able to access the network.");
+				System.out.println("Error Message: " + ace.getMessage());
+			}
+			return response;
+		}
+
 	/*public static void main(String args[]){
 		AwsS3BucketHandling ws=new AwsS3BucketHandling();
 		File  directory=new File("E:\\S3UploadFiles");
