@@ -20,6 +20,55 @@ import com.amazonaws.services.s3.transfer.TransferManager;
 
 
 public class AwsS3BucketHandling {
+	public String getS3BucketObjects(String localStoragePath){
+		String response="fail";
+		AmazonS3 s3 = new AmazonS3Client(new ClasspathPropertiesFileCredentialsProvider());
+		Region usWest2 = Region.getRegion(Regions.US_WEST_2);
+		s3.setRegion(usWest2);
+		String bucketName = "shareboxbucket";
+		System.out.println("\nDownloading an object...");
+
+		System.out.println("===========================================");
+		System.out.println("Getting Started with Amazon S3");
+		System.out.println("===========================================\n");
+		GetObjectRequest getobjreq=null;
+		try{
+			ObjectListing objectListing = s3.listObjects(new ListObjectsRequest()
+			.withBucketName(bucketName));
+			for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+				System.out.println(" \t -> " + objectSummary.getKey() + "  " +
+						"(size = " + objectSummary.getSize() + ")"+
+						"(owner = " + objectSummary.getOwner().getDisplayName() + ")"
+						);
+
+				getobjreq=new GetObjectRequest(bucketName, objectSummary.getKey());
+				File fin=new File(localStoragePath+objectSummary.getKey());
+				s3.getObject(getobjreq,fin);
+				s3.getObject(getobjreq);
+				System.out.println("Object "+ objectSummary.getKey() +" downloaded to "+fin.getPath());
+
+			}
+			System.out.println("after for loop!!!!!!!! ");
+			response="success";
+			
+		} catch (AmazonServiceException ase) {
+			System.out.println("Caught an AmazonServiceException, which means your request made it "
+					+ "to Amazon S3, but was rejected with an error response for some reason.");
+			System.out.println("Error Message:    " + ase.getMessage());
+			System.out.println("HTTP Status Code: " + ase.getStatusCode());
+			System.out.println("AWS Error Code:   " + ase.getErrorCode());
+			System.out.println("Error Type:       " + ase.getErrorType());
+			System.out.println("Request ID:       " + ase.getRequestId());
+		} catch (AmazonClientException ace) {
+			System.out.println("Caught an AmazonClientException, which means the client encountered "
+					+ "a serious internal problem while trying to communicate with S3, "
+					+ "such as not being able to access the network.");
+			System.out.println("Error Message: " + ace.getMessage());
+		}
+		return response;
+	}
+
+	
 	public String addS3BucketObjects( File fileobject,String key){
 		String response="fail";
 		AmazonS3 s3 = new AmazonS3Client(new ClasspathPropertiesFileCredentialsProvider());
