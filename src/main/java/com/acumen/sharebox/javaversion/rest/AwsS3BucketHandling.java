@@ -169,6 +169,46 @@ public class AwsS3BucketHandling {
 			return response;
 		}
 	
+	public JSONObject doAuthentication(String emailid, String pwd) throws Exception{
+		System.out.println("in awss3 doauthentication...");
+		JSONObject mystring = new JSONObject();
+		mystring.put("email", emailid);
+		mystring.put("password", pwd);
+		AwsS3BucketHandling m1 = new AwsS3BucketHandling();
+		JSONObject result = m1.checkUser(mystring);
+		
+		return result;
+	}
+	
+	public JSONObject checkUser(JSONObject user) throws Exception{ 
+        String origPasswd = null; 
+        JSONObject result= new JSONObject();
+        System.out.println("in awss3 chkuser...");
+        MongoClient mongo = new MongoClient( ipaddress , 27017 );
+          try { 
+        	  DB db = mongo.getDB("student");
+  			  DBCollection table = db.getCollection("details");
+  			  BasicDBObject whereQuery = new BasicDBObject();
+  			  whereQuery.put("email", user.get("email"));
+  			  DBCursor cursor = table.find(whereQuery);
+  			  while(cursor.hasNext()) {
+				 DBObject getdata=cursor.next();
+				 origPasswd = getdata.get("password").toString();
+  			  }
+  			  
+  			if(user.get("password").equals(origPasswd)){
+          	  result.put("Msg", "success");
+            }
+            else{
+          	  result.put("Msg", "fail");
+            }
+  			
+              }catch (Exception e) { 
+                  e.printStackTrace(); 
+              } 
+          return(result);
+        }
+	
 		public String restoreS3BucketObjects(String key,int expirationInDays){
 			String response="fail";
 			AmazonS3 s3 = new AmazonS3Client(new ClasspathPropertiesFileCredentialsProvider());
