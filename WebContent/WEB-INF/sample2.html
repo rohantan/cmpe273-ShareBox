@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+	<meta charset="utf-8" />
+	<title>ShareBox Home Page</title>
+	<meta name="keywords" content="avocado template, free template, minimal layout, html css" />
+	<meta name="description" content="Avocado is free template with minimal layout using yellow background and green color menu. Page content is centered in both horizontal and vertical aligns." />
+
+	<!-- favicon-->
+	<link rel="shortcut icon" href="./favicon.png" />
+
+	<!-- 960 grid-->
+	<link rel="stylesheet" href="./css/960_24_col.css" />
+
+	<!-- templatemo style-->
+	<link rel="stylesheet" href="./templatemo_style.css" />
+
+	<!-- jquery plugin -->
+	<script src='./js/jquery.min.js'></script>
+	<script src='./js/jquery-ui.min.js'></script>
+
+	<!-- google map -->
+	<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
+
+	<!-- templatemo config -->
+	<script src="./js/templatemo_config.js"></script>
+
+    <script>
+	function clearText(field)
+	{
+		if (field.defaultValue == field.value) field.value = '';
+		else if (field.value == '') field.value = field.defaultValue;
+	}
+	</script>
+
+</head>
+<body>
+		<form action="rest/files/upload" method="post" enctype="multipart/form-data" class="form" id="viewdata" style="height: 659px; ">
+			<div class="container_24">
+					<div class="grid_24 alpha omega" id="banner">
+							<div class="grid_18 alpha" style="height: 90px; ">
+								<font size="80"><b>ShareBox</b></font></div>
+							
+                            <!-- <a href="http://www.onlyimage.com/free-images/brown" title="brown" class="content_top"  target="_blank"><img src="images/content_top.png" alt="brown"  /></a> -->
+					</div>
+					<div class="grid_18 alpha" id="mid_container_wap" style="height: 465px; ">
+						
+
+						<div class="prefix_1 grid_16 alpha">
+						<!-- <h1>Welcome to ShareBox</h1> -->
+
+						<div class="grid_4 alpha">
+							<img alt="image 1" src="images/skydrive-logo-background.png" style="height: 186px; width: 570px; "/>
+							<br><br>
+						 
+							<div>   
+								<input type="file" name="file" id="file" size="50">
+								<br><br><br><br>
+								<input type="submit" class="btn btn-primary" value="Upload File" style="height: 34px; width: 97px; "> 
+								<input type="button" class="btn btn-primary" value="View Files" onclick="myobjects()" style="width: 90px; height: 33px">
+							</div>
+						</div>
+					</div>
+					<div>
+				<TABLE id="dataTable">
+				</TABLE>
+
+				</div>
+					<div class="prefix_1 grid_7 alpha" style="width: 208px; height: 43px">
+						<div id="map-canvas" class="grid_7 omega alpha">
+						</div>
+					</div>
+					<br>
+					<div class="form-group">
+
+				<!-- <label>Select a File</label> -->
+				<br>
+				<br>
+				<br>
+			</div>
+
+		</div>				
+		</div>
+		
+		<script>
+
+			function myobjects() {
+				var xmlhttp = new XMLHttpRequest();
+				//	document.getElementById("demo").innerHTML = "ShareBox";
+				alert("clicked view files");
+				var emailid=sessionStorage.username;
+				alert("emailid:: "+emailid)
+				var url = "http://localhost:8080/ACUMEN-ShareBox/rest/files/view/" +emailid;
+				//var xmlhttp = new XMLHttpRequest();
+				xmlhttp.open('GET', url, true);
+				xmlhttp.send(null);
+				window.alert("after req sent!");
+				xmlhttp.onreadystatechange = function() {
+					if (xmlhttp.readyState == 4) {
+						window.alert(xmlhttp.status);
+						if (xmlhttp.status == 200) {
+							var response = eval("(" + xmlhttp.responseText
+									+ ")");
+							window.alert("length:  " + response.entries.length);
+							if (response.entries.length > 0) {
+								var tablex = document.getElementById("dataTable");
+								var rowx = tablex.insertRow(0);
+								var cellx1 = rowx.insertCell(0);
+								var cellx2 = rowx.insertCell(1);
+								var cellx3 = rowx.insertCell(2);
+								var cellx4 = rowx.insertCell(3);
+								
+								cellx1.innerHTML = "File Name";
+								cellx2.innerHTML = "Owner";
+								cellx3.innerHTML = "File Size";
+								cellx4.innerHTML = "Last Modified";
+								
+								for ( var i = 0; i < response.entries.length; i++) {
+									window.alert(response.entries[i].bucketname
+											+ ","
+											+ response.entries[i].filename
+											+ "," + response.entries[i].owner
+											+ ","
+											+ response.entries[i].filesize
+											+ ","
+											+ response.entries[i].lastmodified);
+									var table = document.getElementById("dataTable");
+									//var row = table.insertRow(0);
+									var row = table.insertRow(i+1);
+									var cell1 = row.insertCell(0);
+									var cell2 = row.insertCell(1);
+									var cell3 = row.insertCell(2);
+									var cell4 = row.insertCell(3);
+									//var cell5 = row.insertCell(4);
+									/* cell1.innerHTML = response.entries[i].bucketname; */
+									cell1.innerHTML = response.entries[i].filename
+									cell2.innerHTML = response.entries[i].owner;
+									cell3.innerHTML = response.entries[i].filesize;
+									cell4.innerHTML = response.entries[i].lastmodified;
+									//cell5.innerHTML = response.entries[i].lastmodified;
+								}
+
+								/* document.createElement("table");
+								document.createElement("tr"); */
+							} else {
+								window.alert("No Objects in your Bucket");
+								var table = document.getElementById("dataTable");
+								var row = table.insertRow(i);
+								var cell1 = row.insertCell(0);
+								cell1.innerHTML = "No Files in you ShareBox";
+							}
+						} else {
+							window.alert("not 200");
+						}
+					} else {
+						window.alert("not 4");
+					}
+				}
+			}
+			
+		</script>
+		<script src="js/jquery.js"></script>
+		<script
+			src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+		</form>
+</body>
+</html>
