@@ -56,7 +56,18 @@ public class FileHandling {
     	return Response.status(200).entity(output).build();
     }  
 
-    
+    @GET
+    @Path("/doAuthentication/{username}/{pwd}")
+    public String doAuthentication(@PathParam("username") String username,@PathParam("pwd") String pwd) throws Exception{
+    	this.setUseremail(username);
+    	System.out.println("inside method doAuthentication###################");
+    	System.out.println(username+" "+pwd);
+    	AwsS3BucketHandling awsS3BucketHandling=new AwsS3BucketHandling();
+    	JSONObject jsonObject=new JSONObject();
+    	jsonObject=awsS3BucketHandling.doAuthentication(username, pwd);
+    	System.out.println("jsonObject.toString(): "+jsonObject.toString());
+        return jsonObject.toString();
+    }
     
     @POST
     @Path("/uploadDirectory")
