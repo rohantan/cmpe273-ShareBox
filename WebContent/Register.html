@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+</head>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
+<body>
+<form enctype="multipart/form-data" class="form" id="login-form">
+		<div class="form-group">
+			<label>ShareBox</label>
+		</div>
+		<div class="form-group">
+			<label for="firstname">First Name</label>
+			<input class="form-control" id="bt_firstname" name="bt_firstname"
+				placeholder="Enter First Name">
+		</div>
+		<div class="form-group">
+			<label for="lastname">First Name</label>
+			<input class="form-control" id="bt_lastname" name="bt_lastname"
+				placeholder="Enter Last Name">
+		</div>
+		<div class="form-group">
+			<label for="login-email">Email address</label> <input type="email"
+				class="form-control" id="login-email" name="login-email"
+				placeholder="Enter email">
+		</div>
+		<div class="form-group">
+			<label for="login-password">Password</label> <input type="password"
+				class="form-control" id="login-password" name="login-password"
+				placeholder="Password">
+		</div>
+		
+		<div class="form-group">
+			<input type="button" id="bt_signup" class="btn btn-primary"
+				value="Sign up" onclick="register()" /> 
+		</div>
+<script>
+function register() {
+	alert("in register");
+	var xmlhttp = new XMLHttpRequest();
+	var firstname=document.getElementById("bt_firstname").value;
+	var lastname=document.getElementById("bt_lastname").value;
+	var emailid=document.getElementById("login-email").value;
+	var pwd=document.getElementById("login-password").value;
+	var url = "http://localhost:8080/ACUMEN-ShareBox/rest/files/register/" +firstname+ "/" +lastname+ "/" +emailid+ "/" +pwd;
+	alert("url is:  "+url);
+	//var xmlhttp = new XMLHttpRequest();
+	xmlhttp.open('POST', url, true);
+	xmlhttp.send(null);
+	window.alert("after req sent!");
+	xmlhttp.onreadystatechange = function() {
+		if (xmlhttp.readyState == 4) {
+			window.alert(xmlhttp.status);
+			if (xmlhttp.status == 200) {
+				/* document.write("hello user"); */
+				var res = eval("(" + xmlhttp.responseText + ")");
+				alert("get after response");
+				//window.alert("length:  " + response.Objects.length);
+				window.alert("inside status 200");
+				if (res.Msg=="success") {
+					window.alert(res);
+					window.location='Login.html';
+				}
+				else {
+					window.location='Register.html';
+				}
+			} else {
+				window.alert("not 200");
+			}
+		} else {
+			window.alert("not 4");
+		}
+	}
+}
+</script>
+<script src="js/jquery.js"></script>
+		<script
+			src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+</form>
+</body>
+</html>

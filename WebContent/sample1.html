@@ -1,0 +1,60 @@
+<html>
+<body>
+<script>
+function myobjects() {
+				xmlhttp = new XMLHttpRequest();
+			//	document.getElementById("demo").innerHTML = "ShareBox";
+				alert("clicked view files");
+				var url = "http://localhost:8080/ACUMEN-ShareBox/rest/files/view";
+				//var xmlhttp = new XMLHttpRequest();
+				xmlhttp.open('GET', url, true);
+				xmlhttp.send(null);
+				window.alert("after req sent!");
+				xmlhttp.onreadystatechange = function() 
+			{
+					if (xmlhttp.readyState == 4) 
+					{
+						window.alert(xmlhttp.status);
+					 if (xmlhttp.status == 200) 
+					 {
+							var response = eval("(" + xmlhttp.responseText	+ ")");
+							window.alert("length:  " + response.Objects.length);
+							if (response.Objects.length > 0)
+ 							{
+								for(var i=0;i<response.Objects.length;i++)
+								{
+							/*	window.alert(response.Objects[i].BucketName+","+response.Objects[i].FileName								+","+response.Objects[i].Owner+","+response.Objects[i].FileSize+","+response.Objects[i].LastModified);*/
+								document.getElementById("Bname").innerHTML=response.Objects[i].BucketName;
+								document.getElementById("Fname").innerHTML=response.Objects[i].FileName;
+								document.getElementById("owner").innerHTML=response.Objects[i].Owner;
+								document.getElementById("size").innerHTML=response.Objects[i].FileSize;
+								document.getElementById("LastMod").innerHTML=response.Objects[i].LastModified;
+								}/* document.createElement("table");
+								document.createElement("tr"); */
+							 } else {
+								window.alert("No Objects in your Bucket");
+								}
+					 } else {
+						window.alert("not 200");
+						}
+					} 
+					else 	{
+						window.alert("not 4");
+						}
+			}
+
+		}
+</script>
+
+
+<TABLE id="dataTable" width="350px" border="1">
+<TR>
+            <TD>Bucket Name: <span id="Bname"></span><br> </TD>
+            <TD> FileName: <span id="Fname"></span><br></TD>
+            <TD> Owner: <span id="owner"></span><br>  </TD>
+             <TD>Filesize: <span id="size"></span><br> </TD>
+		<TD>LastModified: <span id="LastMod"></span><br> </TD>
+        </TR>
+</TABLE>
+</body>
+</html>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
+<body>
+
+	<form enctype="multipart/form-data" class="form" id="login-form">
+
+		<div class="form-group">
+			<label>ShareBox</label>
+		</div>
+		<div class="form-group">
+			<label for="login-email">Email address</label> <input type="email"
+				class="form-control" id="login-email" name="login-email"
+				placeholder="Enter email">
+		</div>
+		<div class="form-group">
+			<label for="login-password">Password</label> <input type="password"
+				class="form-control" id="login-password" name="login-password"
+				placeholder="Password">
+		</div>
+
+		<input type="button" id="bt_signin" class="btn btn-primary"
+			value="Sign in" onclick="auth()" /> <input type="button"
+			id="bt_register" class="btn btn-primary" value="Register"
+			onclick="location.href='Register.html'" />
+
+
+		<script>
+			function auth() {
+				var xmlhttp = new XMLHttpRequest();
+				//	document.getElementById("demo").innerHTML = "ShareBox";
+				//alert("clicked view files");
+				//alert(document.getElementById("login-email").value );
+				//alert(document.getElementById("login-password").value);
+				var emailid=document.getElementById("login-email").value;
+				var pwd=document.getElementById("login-password").value;
+				var url = "http://localhost:8080/ACUMEN-ShareBox/rest/files/doAuthentication/" +emailid+ "/" +pwd;
+				xmlhttp.open('GET', url, true);
+				xmlhttp.send(null);
+				window.alert("after req sent!");
+				xmlhttp.onreadystatechange = function() {
+					if (xmlhttp.readyState == 4) {
+						window.alert(xmlhttp.status);
+						if (xmlhttp.status == 200) {
+							var response = eval("(" + xmlhttp.responseText
+									+ ")");
+							//alert("after 200:: "+response.Msg);
+							if (response.Msg == "success") {
+								//alert("in success")
+								sessionStorage.username=emailid;
+								window.location="sample2.html";
+							} else {
+								window.location="Login.html";
+							}
+						} else {
+							//window.alert("not 200");
+						}
+					} else {
+						//window.alert("not 4");
+					}
+				}
+			}
+			
+		</script>
+		<script src="js/jquery.js"></script>
+		<script
+			src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+	</form>
+
+</body>
+</html>

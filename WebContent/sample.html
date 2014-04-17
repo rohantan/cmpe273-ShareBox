@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<link rel="stylesheet" href="css/bootstrap.min.css">
+<link rel="stylesheet" href="css/style.css">
+<body>
+
+	<form action="rest/files/upload" method="post"
+		enctype="multipart/form-data" class="form" id="viewdata">
+		<div class="form-group" align="center">
+			<div class="form-group">
+				<label>My Box</label>
+			</div>
+			<!-- <button type="submit" class="btn btn-primary">Submit</button> -->
+			<!-- <input type="button" class="btn btn-primary" value="Sign in" onclick="window.location='validinvalid.html'"/> -->
+			<input type="button" class="btn btn-primary" value="View Files"
+				onclick="myobjects()" />
+			<div class="form-group">
+
+				<!-- <label>Select a File</label> -->
+				<input type="file" name="file" id="file" size="50" /> <input
+					type="submit" class="btn btn-primary" value="Upload File" />
+			</div>
+			<div>
+				<TABLE id="dataTable" border="1">
+				</TABLE>
+
+			</div>
+		</div>
+
+		<script>
+			function myobjects() {
+				var xmlhttp = new XMLHttpRequest();
+				//	document.getElementById("demo").innerHTML = "ShareBox";
+				alert("clicked view files");
+				var emailid=sessionStorage.username;
+				alert("emailid:: "+emailid)
+				var url = "http://localhost:8080/ACUMEN-ShareBox/rest/files/view/" +emailid;
+				//var xmlhttp = new XMLHttpRequest();
+				xmlhttp.open('GET', url, true);
+				xmlhttp.send(null);
+				window.alert("after req sent!");
+				xmlhttp.onreadystatechange = function() {
+					if (xmlhttp.readyState == 4) {
+						window.alert(xmlhttp.status);
+						if (xmlhttp.status == 200) {
+							var response = eval("(" + xmlhttp.responseText
+									+ ")");
+							window.alert("length:  " + response.entries.length);
+							if (response.entries.length > 0) {
+								for ( var i = 0; i < response.entries.length; i++) {
+									window.alert(response.entries[i].bucketname
+											+ ","
+											+ response.entries[i].filename
+											+ "," + response.entries[i].owner
+											+ ","
+											+ response.entries[i].filesize
+											+ ","
+											+ response.entries[i].lastmodified);
+									var table = document.getElementById("dataTable");
+									var row = table.insertRow(i);
+									var cell1 = row.insertCell(0);
+									var cell2 = row.insertCell(1);
+									var cell3 = row.insertCell(2);
+									var cell4 = row.insertCell(3);
+									var cell5 = row.insertCell(4);
+									cell1.innerHTML = response.entries[i].bucketname;
+									cell2.innerHTML = response.entries[i].filename;
+									cell3.innerHTML = response.entries[i].owner;
+									cell4.innerHTML = response.entries[i].filesize;
+									cell5.innerHTML = response.entries[i].lastmodified;
+								}
+
+								/* document.createElement("table");
+								document.createElement("tr"); */
+							} else {
+								window.alert("No Objects in your Bucket");
+								var table = document.getElementById("dataTable");
+								var row = table.insertRow(i);
+								var cell1 = row.insertCell(0);
+								cell1.innerHTML = "No Files in you ShareBox";
+							}
+						} else {
+							window.alert("not 200");
+						}
+					} else {
+						window.alert("not 4");
+					}
+				}
+			}
+		</script>
+		<script src="js/jquery.js"></script>
+		<script
+			src="http://cdnjs.cloudflare.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+
+	</form>
+
+</body>
+</html>
