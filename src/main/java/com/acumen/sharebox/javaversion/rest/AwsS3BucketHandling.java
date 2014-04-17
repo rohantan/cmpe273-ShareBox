@@ -73,6 +73,58 @@ private String ipaddress="54.187.22.200";
 	
 	
 	
+	public JSONObject registerUser(String firstname,String lastname,String emailid,String pwd) throws Exception{
+//		MongoClient mongo = new MongoClient( "localhost" , 27017 );
+		System.out.println("in awss3 registeruser");
+		JSONObject mystring = new JSONObject();
+		mystring.put("firstname", firstname);
+		mystring.put("lastname", lastname);
+		mystring.put("email", emailid);
+		mystring.put("password", pwd);
+		AwsS3BucketHandling m1 = new AwsS3BucketHandling();
+//		m1.mongo = mongo;
+		JSONObject output = m1.addUser(mystring);
+		System.out.println(output);
+		
+		return output;
+	}
+	
+	
+	public JSONObject addUser(JSONObject user) throws Exception{
+		JSONObject result= new JSONObject();
+		MongoClient mongo = new MongoClient( ipaddress , 27017 );
+		System.out.println("in awss3 adduser..");
+		try{
+			boolean flag = false;
+			BasicDBObject query = new BasicDBObject("firstname",user.get("firstname")).append("lastname", user.get("lastname")).append("email", user.get("email")).append("password", user.get("password"));
+			DB db = mongo.getDB("student");
+			DBCollection table = db.getCollection("details");
+			
+			BasicDBObject whereQuery = new BasicDBObject();
+			whereQuery.put("email", user.get("email"));
+			DBCursor cursor = table.find(whereQuery);
+			while(cursor.hasNext()) {
+				 DBObject getdata=cursor.next();
+				 String email = getdata.get("email").toString();
+				 if(email.equals(user.get("email"))){
+					flag = true;
+	            	result.put("Msg", "failure");
+					break; 
+				 }
+			}
+			if(flag == false){
+				table.insert(query);
+				result.put("Msg", "success");
+			}
+		}catch (Exception e){
+			e.printStackTrace();
+		}
+		return(result);
+	}
+	
+	
+	
+	
 	
 	//original- do not delete
 	/*public String addS3BucketObjects( File fileobject,String key){
@@ -159,6 +211,78 @@ private String ipaddress="54.187.22.200";
 	
 	
 	public String viewS3BucketObjects(String username){
+		//		Map FileObjectsContainerMap=new HashMap();
+		/*AmazonS3 s3 = new AmazonS3Client(new ClasspathPropertiesFileCredentialsProvider());
+		Region usWest2 = Region.getRegion(Regions.US_WEST_2);
+		s3.setRegion(usWest2);
+		String bucketName = "shareboxbucket";
+		System.out.println("\nView objects...");
+
+		JSONArray jArray = new JSONArray();
+		JSONObject jObject = new JSONObject();
+		JSONObject jsonObject = new JSONObject();
+
+
+		try{
+			ObjectListing objectListing = s3.listObjects(new ListObjectsRequest()
+			.withBucketName(bucketName));
+			//			int count=1;
+			int i=0;
+			for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
+				System.out.println(" \t -> " + objectSummary.getKey() + "  " +
+						"(Size = " + objectSummary.getSize() + ")"+
+						"(Owner = " + objectSummary.getOwner().getDisplayName() + ")" +
+						"(LastModified = " + objectSummary.getLastModified() + ")" +
+						"(BucketName = " + objectSummary.getBucketName() + ")"
+						);
+
+				try{
+					jObject=new JSONObject();
+					jObject.put("BucketName", objectSummary.getBucketName());
+					jObject.put("FileName", objectSummary.getKey());
+					jObject.put("Owner", objectSummary.getOwner().getDisplayName());
+					jObject.put("FileSize", objectSummary.getSize());
+					jObject.put("LastModified", objectSummary.getLastModified());
+
+					jArray.put(i, jObject);
+					System.out.println("jArray.get("+i+")"+jArray.get(i));
+					i++;
+				}catch(Exception e){
+
+				}
+				Map FileObjectsMap=new HashMap();
+				FileObjectsMap.put("BucketName", objectSummary.getBucketName());
+				FileObjectsMap.put("FileName", objectSummary.getKey());
+				FileObjectsMap.put("Owner", objectSummary.getOwner().getDisplayName());
+				FileObjectsMap.put("FileSize", objectSummary.getSize());
+				FileObjectsMap.put("LastModified", objectSummary.getLastModified());
+
+				FileObjectsContainerMap.put(count, FileObjectsMap);
+
+				System.out.println("FileObjectsContainerMap values: "+FileObjectsContainerMap.toString());
+			}
+			try{
+				jsonObject.put("Objects", jArray);
+			}catch(Exception e){
+
+			}
+			System.out.println("after for loop!!!!!!!! ");
+
+		} catch (AmazonServiceException ase) {
+			System.out.println("Caught an AmazonServiceException, which means your request made it "
+					+ "to Amazon S3, but was rejected with an error response for some reason.");
+			System.out.println("Error Message:    " + ase.getMessage());
+			System.out.println("HTTP Status Code: " + ase.getStatusCode());
+			System.out.println("AWS Error Code:   " + ase.getErrorCode());
+			System.out.println("Error Type:       " + ase.getErrorType());
+			System.out.println("Request ID:       " + ase.getRequestId());
+		} catch (AmazonClientException ace) {
+			System.out.println("Caught an AmazonClientException, which means the client encountered "
+					+ "a serious internal problem while trying to communicate with S3, "
+					+ "such as not being able to access the network.");
+			System.out.println("Error Message: " + ace.getMessage());
+		}*/
+//		JSONObject bucketObjectDetails=new JSONObject();
 		String bucketObjectDetails=null;
 		try{
 			
@@ -170,7 +294,55 @@ private String ipaddress="54.187.22.200";
 		return bucketObjectDetails;
 	}
 	
+	public String getBucketObjectDetailsFromDB(String username){
+		String result=getMetadataFromDB(username);
+		return result;
+	}
+
+	/*public String addMetaDataToDbAfterS3(String username) throws Exception{
+		String result="fail";
+		dbObjectHolder.put("bucketname", getBucketName(username));
+		result = addMetaDataToDB(dbObjectHolder);
+		return result;
+	}*/
 	
+	/*public String getBucketName(String username){
+		String result=null;
+		
+		return result;
+	}*/
+	
+	/*public String addMetaDataToDB(JSONObject metadata){
+			JSONObject result= new JSONObject();
+			try{
+				MongoClient mongo = new MongoClient( ipaddress , 27017 );
+				DB db = mongo.getDB("metadata");
+				DBCollection table = db.getCollection("details");
+				BasicDBObject query = new BasicDBObject("username",metadata.get("username")).append("filename",metadata.get("filename")).append("bucketname", metadata.get("bucketname")).append("filesize", metadata.get("filesize")).append("lastmodified", metadata.get("lastmodified")).append("owner",metadata.get("username"));
+				table.insert(query);
+				result.put("Msg", "success");
+			}catch(Exception e){
+			e.printStackTrace();
+			}
+			return (result.toString());
+	}*/
+	
+	/*public String getMetadataFromDB(String email){
+		String result = null;
+		try{
+			MongoClient mongo = new MongoClient( ipaddress , 27017 );
+			DB db = mongo.getDB("metadata");
+			DBCollection table = db.getCollection("details");
+			BasicDBObject whereQuery = new BasicDBObject();
+			whereQuery.put("username", email);
+			table.find(whereQuery);
+			DBCursor cursor = table.find(whereQuery); 
+			result = (cursor.next().toString());
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return result;
+	}*/
 	public String getMetadataFromDB(String email){
 	    JSONArray data = new JSONArray();
 	    JSONObject result = new JSONObject();
@@ -359,6 +531,16 @@ private String ipaddress="54.187.22.200";
 
 	
 	
+	/*public void publicObject(){
+		S3Bucket publicBucket = new S3Bucket("sample" + ".publicBucket");
+		s3Service.createBucket(publicBucket);
+		S3Object publicObject = new S3Object(
+			    publicBucket, "publicObject.txt", "This object is public");
+			publicObject.setAcl(bucketAcl);
+			s3Service.putObject(publicBucket, publicObject);        
+			System.out.println("View public object contents here: http://s3.amazonaws.com/" 
+			    + publicBucket.getName() + "/" + publicObject.getKey());
+	}*/
 
 	public static void main(String args[]) throws Exception{
 		AwsS3BucketHandling ws=new AwsS3BucketHandling();
