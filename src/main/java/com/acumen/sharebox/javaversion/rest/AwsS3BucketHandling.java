@@ -168,10 +168,8 @@ private String ipaddress="54.187.22.200";
 	
 	
 	public String viewS3BucketObjects(String username){
-		
 		String bucketObjectDetails=null;
 		try{
-			
 			bucketObjectDetails=getBucketObjectDetailsFromDB(username);
 		}catch(Exception e){
 			e.printStackTrace();
@@ -179,48 +177,82 @@ private String ipaddress="54.187.22.200";
 		System.out.println("bucketObjectDetails:::: "+bucketObjectDetails);
 		return bucketObjectDetails;
 	}
+
+
+	public String getBucketName(String useremail) throws Exception{
+		JSONObject obj1 = new JSONObject();
+		System.out.println("in getBucketname:: "+useremail);
+		try{
+			MongoClient mongo = new MongoClient( ipaddress , 27017 );
+			DB db = mongo.getDB("student");
+			DBCollection table = db.getCollection("details");
+			BasicDBObject whereQuery = new BasicDBObject();
+			whereQuery.put("email", useremail);
+			table.find(whereQuery);
+			DBCursor cursor = table.find(whereQuery); 
+			while(cursor.hasNext()){
+				System.out.println("in while");
+				DBObject getdata=cursor.next();
+				System.out.println("$$$$Dbdata:::: "+getdata.toString());
+				String bucketname = getdata.get("bucketname").toString();
+				obj1.put("bucketname", bucketname);
+			}
+			System.out.println("final object::  "+obj1);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		return obj1.get("bucketname").toString();
+
+	}
+	
 	
 	public String getBucketObjectDetailsFromDB(String username){
 		String result=getMetadataFromDB(username);
 		return result;
 	}
-
+	
 	
 	public String getMetadataFromDB(String email){
-	    JSONArray data = new JSONArray();
-	    JSONObject result = new JSONObject();
+		System.out.println(email);
+		JSONArray data = new JSONArray();
+		JSONObject result = new JSONObject();
 		try{
 			MongoClient mongo = new MongoClient( ipaddress , 27017 );
-			  DB db = mongo.getDB("metadata");
-			  DBCollection table = db.getCollection("details");
-			  BasicDBObject whereQuery = new BasicDBObject();
-			  whereQuery.put("username", email);
-			  table.find(whereQuery);
-			  DBCursor cursor = table.find(whereQuery); 
-			  while(cursor.hasNext()){
-				  DBObject getdata=cursor.next();
-				  String username = getdata.get("username").toString();
-				  String filename = getdata.get("filename").toString();
-				  String bucketname = getdata.get("bucketname").toString();
-				  String filesize = getdata.get("filesize").toString();
-				  String lastmodified = getdata.get("lastmodified").toString();
-				  String owner = getdata.get("owner").toString();
-				  
-				  JSONObject obj1 = new JSONObject();
-				  obj1.put("username", username);
-				  obj1.put("filename", filename);
-				  obj1.put("bucketname", bucketname);
-				  obj1.put("filesize", filesize);
-				  obj1.put("lastmodified", lastmodified);
-				  obj1.put("owner", owner);
-				  
-				  data.put(obj1) ;
-				  
-			  }
-			  result.put("entries", data);
-			  System.out.println("final object::  "+data);
+			DB db = mongo.getDB("metadata");
+			DBCollection table = db.getCollection("details");
+			BasicDBObject whereQuery = new BasicDBObject();
+			whereQuery.put("username", email);
+			table.find(whereQuery);
+			DBCursor cursor = table.find(whereQuery); 
+			while(cursor.hasNext()){
+				DBObject getdata=cursor.next();
+				System.out.println(getdata);
+				String username = getdata.get("username").toString();
+				String filename = getdata.get("filename").toString();
+				String bucketname = getdata.get("bucketname").toString();
+				String filesize = getdata.get("filesize").toString();
+				String lastmodified = getdata.get("lastmodified").toString();
+				String owner = getdata.get("owner").toString();
+				String downloadlink = getdata.get("downloadlink").toString();
+				String rating = getdata.get("rating").toString();
+
+				JSONObject obj1 = new JSONObject();
+				obj1.put("username", username);
+				obj1.put("filename", filename);
+				obj1.put("bucketname", bucketname);
+				obj1.put("filesize", filesize);
+				obj1.put("lastmodified", lastmodified);
+				obj1.put("owner", owner);
+				obj1.put("downloadlink", downloadlink);
+				obj1.put("rating", rating);
+				
+				data.put(obj1) ;
+
+			}
+			result.put("entries", data);
+			System.out.println("final object::  "+result);
 		}catch(Exception e){
-			
+
 		}
 		return result.toString();
 	}
