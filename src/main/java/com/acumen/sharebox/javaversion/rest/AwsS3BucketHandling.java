@@ -29,7 +29,7 @@ import com.mongodb.MongoClient;
 import com.sun.jersey.core.header.FormDataContentDisposition;
 
 public class AwsS3BucketHandling {
-private String ipaddress="54.187.22.200";
+private String ipaddress="";//TODO put mongo db ip here!!
 //private JSONObject dbObjectHolder=new JSONObject();	
 	public JSONObject doAuthentication(String emailid, String pwd) throws Exception{
 		System.out.println("in awss3 doauthentication...");
