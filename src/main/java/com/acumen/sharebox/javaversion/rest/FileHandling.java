@@ -144,4 +144,14 @@ public void setUseremail(String useremail) {
         return Response.status(200).entity(output).build();
     }
     
+    @GET
+    @Path("/viewshared/{username}")
+    public String viewsharedObjects(@PathParam("username") String username) throws Exception{
+    	System.out.println("inside viewsharedObjects method######");
+    	AwsS3BucketHandling awsS3BucketHandling=new AwsS3BucketHandling();
+    	String result= awsS3BucketHandling.viewSharedBucketObjects(username);
+    	System.out.println("inside REST /view");
+    	return result;
+    }
+    
 }
