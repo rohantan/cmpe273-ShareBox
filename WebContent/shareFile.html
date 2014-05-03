@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>ShareBox-ShareFileOnEmail</title>
+<link rel="stylesheet" href="css/tablestyle.css" />
+<link rel="stylesheet"
+	href="jquery-ui-1.10.4.custom/css/sunny/jquery-ui-1.10.4.custom.css" />
+<script src="js/jquery-2.1.0.js"></script>
+<script src="jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js"></script>
+</head>
+<body background="./images/body_bg.jpg">
+	<form>
+		<br> <br> <br>
+		<div align="center" class="share_label_font">
+			<label>Share My File</label>
+		</div>
+		<br> <br> <br>
+		<div class="page_font_family table_div_style divvhalign">
+			<div align="center" class="fontsizes">
+				Email ID: <input type="email" name="emailid" id="recemailid">
+			</div>
+			<div align="center">
+				<input type="button" class="bt-button-delete" value="Share"
+					style="height: 34px; width: 97px;" onclick="sharefilerequest()"></input><br>
+				<br>
+			</div>
+		</div>
+		<script src="js/loadTable.js"></script>
+	</form>
+
+	<div id="dialog-message" title="File Shared" style="visibility: hidden">
+		<span class="ui-state-default"><span
+			class="ui-icon ui-icon-info" style="float: left; margin: 0 7px 0 0;"></span></span>
+			<div id="myDialogText"> </div>
+	</div>
+
+
+</body>
+</html>
