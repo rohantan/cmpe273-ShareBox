@@ -2,10 +2,8 @@ cmpe273-ShareBox
 ================
 
 DropBox like utility using Amazon S3 cloud
-------------------------------------------
 
 Technologies: Java, MongoDB, HTML5, JS
-------------
 
 Usage:
 -----
