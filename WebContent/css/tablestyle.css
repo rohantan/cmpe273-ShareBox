@@ -1,0 +1,118 @@
+.rate-color-green {
+	background-color: #00FF00 !important;
+}
+
+.rate-color-blue {
+	background-color: #00CCFF !important;
+}
+
+.rate-color-pink {
+	background-color: #FFCCCC !important;
+}
+
+.bt-button-delete {
+	display: inline-block;
+	color: #ffffff;
+	background-color: #FF6600;
+	border: 1px solid #FF6600;
+	font-weight: bold;
+	font-size: 11px;
+	text-align: center;
+	padding: 10px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+	text-decoration: none;
+	margin-left: 1px;
+	border-radius: 5px;
+	white-space: nowrap;
+}
+
+.bt-button-viewhere {
+	display: inline-block;
+	color: #ffffff;
+	background-color: #FFAD33;
+	border: 1px solid #FFAD33;
+	font-weight: bold;
+	font-size: 11px;
+	text-align: center;
+	padding: 10px;
+	padding-top: 1px;
+	padding-bottom: 2px;
+	text-decoration: none;
+	margin-left: 1px;
+	border-radius: 5px;
+	white-space: nowrap;
+}
+
+.bt-button-delete:hover {
+	background-color: #ffffff;
+	color: #FFAD33;
+}
+
+}
+.tb_font {
+	font-weight: bold;
+	font-family: verdana, helvetica, arial, sans-serif;
+	box-shadow: 10px 10px 5px #888888;
+}
+
+.share_label_font {
+	color: #0066FF;
+	padding: 10px;
+	font-family: verdana, helvetica, arial, sans-serif;
+	font-size: 25px;
+	box-shadow: 10px 10px 5px #888888;
+}
+
+.page_font_family {
+	font-family: verdana, helvetica, arial, sans-serif;
+	font-size: 11px;
+}
+
+.shareboxHomeFont{
+	color: #0066FF;
+	font-family: verdana, helvetica, arial, sans-serif;
+	font-size: 25px;
+}
+
+.fileupload_style {
+	width: 800px;
+	height: 80px;
+	box-shadow: 10px 10px 5px #888888;
+}
+
+.fileup_style{
+	width: 400px;
+	height: 80px;
+	box-shadow: 10px 10px 5px #888888;
+}
+
+.download_link {
+	text-decoration: none;
+	color: #0066FF;
+	background-color: transparent;
+}
+
+.download_link:hover {
+	text-decoration: underline;
+	font-weight: bold;
+	color: #0000FF;
+	background-color: transparent;
+}
+
+.table_div_style {
+	box-shadow: 10px 10px 5px #888888;
+}
+
+.divvhalign {
+	margin-left: auto;
+	margin-right: auto;
+	width: 70%;
+}
+
+.fontsizes{
+	color: #0066FF;
+	padding: 10px;
+	font-family: verdana, helvetica, arial, sans-serif;
+	font-size: 12px;
+}
