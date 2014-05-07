@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Sharebox-Home</title>
+<link rel="stylesheet" href="css/tablestyle.css" />
+<link rel="stylesheet"
+	href="jquery-ui-1.10.4.custom/css/sunny/jquery-ui-1.10.4.custom.css" />
+<script src="js/jquery-2.1.0.js"></script>
+<script src="jquery-ui-1.10.4.custom/js/jquery-ui-1.10.4.custom.js"></script>
+
+
+<script>
+	function addurlparams() {
+		var key = "userid"
+		var value = sessionStorage.username;
+		key = encodeURI(key);
+		value = encodeURI(value);
+		var urlaction = document.getElementById("myForm").action;
+		var url = updateQueryStringParameter(urlaction, key, value);
+		document.getElementById("myForm").action = url;
+		document.getElementById("uploadbt").disabled = false;
+		document.getElementById("uploadbt").setAttribute("class",
+				"bt-button-delete")
+	}
+
+	function updateQueryStringParameter(uri, key, value) {
+		var re = new RegExp("([?&])" + key + "=.*?(&|$)", "i");
+		var separator = uri.indexOf('?') !== -1 ? "&" : "?";
+		if (uri.match(re)) {
+			return uri.replace(re, '$1' + key + "=" + value + '$2');
+		} else {
+			return uri + separator + key + "=" + value;
+		}
+	}
+</script>
+</head>
+
+<body background="./images/body_bg.jpg">
+	<div align="center" class="shareboxHomeFont">
+		<label>ShareBox</label>
+	</div>
+	<br>
+	<form id="myForm" action="rest/files/upload" method="post"
+		enctype="multipart/form-data" class="form" id="viewdata">
+		<div align="center" class="page_font_family">
+			<table>
+				<tr>
+					<td><input type="button" class="bt-button-delete"
+						value="Shared To Me" style="height: 34px; width: 97px;"
+						onclick="redirectSharedFiles()"></td>
+					<td><input type="button" class="bt-button-delete"
+						value="My Activities" style="height: 34px; width: 97px;"
+						onclick="redirectViewLogs()"></input></td>
+					<td><input type="button" class="bt-button-delete"
+						value="Shared By Me" style="height: 34px; width: 97px;"
+						onclick="redirectSharedByMeFiles()"></input></td>
+					<td><input type="button" class="bt-button-delete" value="Logout"
+				style="height: 34px; width: 97px;" onclick="logoutfunction()"></input></td>
+				</tr>
+			</table>
+			<br />
+			<br />
+			<div align="center" class="storagelimit_font_family">
+			<label id="storageSize_lb"></label>
+			</div>
+			<br />
+			<div class="fileup_style">
+				<div>
+					<br />
+					<br /> <input type="file" name="file" id="file" size="50"
+						onchange="addurlparams()"> <input type="submit"
+						id="uploadbt" class="bt-button-viewhere" value="Upload File"
+						style="height: 34px; width: 97px;" disabled="disabled"></input>
+				</div>
+			</div>
+			<br /> <br />
+		</div>
+		<script src="js/sample2.js"></script>
+		<script src="js/loadTable.js"></script>
+	</form>
+	<div align="center" class="page_font_family">
+		<div>
+			<table class="jtable tb_font table_div_style" id="dataTable"
+				border="1" cellpadding="8">
+				<thead>
+					<tr>
+						<th>FileName</th>
+						<th>Size in MB</th>
+						<th>Last Modified</th>
+						<th>Download</th>
+						<th>Importance</th>
+						<th>Delete</th>
+						<th>Share</th>
+						<th>View Here</th>
+					</tr>
+				</thead>
+				<tbody>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</body>
+
+</html>
