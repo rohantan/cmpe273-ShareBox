@@ -1,9 +1,9 @@
 cmpe273-ShareBox
 ================
-Team: Acumen
-San Jose State University
-Project: DropBox like utility using Amazon S3 cloud
-Project Guide: Prof. Sithu Aung
+- Team: Acumen
+- San Jose State University
+- Project: DropBox like utility using Amazon S3 cloud
+- Project Guide: Prof. Sithu Aung
 
 Usage:
 -----
