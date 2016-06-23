@@ -15,7 +15,7 @@ Technologies:
 
 Application Insights:
 ---------------------
-1. This is a browser based application with user interface in HTML5 and backend in Java.
+1. This is a browser based application with user interface in HTML5 and backend in Java (Developed using Dropwizard Framework).
 2. This is a maven web project
 3. For cloud storage, Sharebox uses Amazon S3 storage cloud. 
 4. ShareBox maintains the metadata for each user separately in the application Database.
